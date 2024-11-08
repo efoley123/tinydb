@@ -2,7 +2,7 @@
 Contains the :class:`base class <tinydb.storages.Storage>` for storages and
 implementations.
 """
-
+#test
 import io
 import json
 import os
