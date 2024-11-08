@@ -1,0 +1,88 @@
+============================= test session starts ==============================
+platform linux -- Python 3.8.18, pytest-8.3.3, pluggy-1.5.0
+rootdir: /home/runner/work/tinydb/tinydb
+configfile: ov-report=term-missing
+plugins: cov-5.0.0
+collected 14 items
+
+generated_tests/python/test_storages.py ...F.....FF...WARNING: Failed to generate report: No data to report.
+
+                                                                         [100%]
+
+=================================== FAILURES ===================================
+__________________ test_memory_storage_read_write[data0-None] __________________
+
+data = {}, expected = None
+
+    @pytest.mark.parametrize("data,expected", [
+        ({}, None),
+        ({"key": "value"}, {"key": "value"})
+    ])
+    def test_memory_storage_read_write(data, expected):
+        storage = MemoryStorage()
+        storage.write(data)
+>       assert storage.read() == expected
+E       assert {} == None
+E        +  where {} = read()
+E        +    where read = <tinydb.storages.MemoryStorage object at 0x7f7b2f7f6bb0>.read
+
+generated_tests/python/test_storages.py:36: AssertionError
+______________________ test_json_storage_unsupported_mode ______________________
+
+    def test_json_storage_unsupported_mode():
+        with pytest.raises(IOError):
+>           JSONStorage("dummy_path", access_mode='w')
+E           Failed: DID NOT RAISE <class 'OSError'>
+
+generated_tests/python/test_storages.py:66: Failed
+________________________ test_json_storage_write_error _________________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f7b2f2f7bb0>
+
+    def test_json_storage_write_error(monkeypatch):
+        monkeypatch.setattr("builtins.open", mock_open(read_data="{}"))
+        storage = JSONStorage("dummy_path")
+        with pytest.raises(IOError):
+>           storage.write({"key": "value"})
+
+generated_tests/python/test_storages.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tinydb.storages.JSONStorage object at 0x7f7b2f2dc700>
+data = {'key': 'value'}
+
+    def write(self, data: Dict[str, Dict[str, Any]]):
+        # Move the cursor to the beginning of the file just in case
+        self._handle.seek(0)
+    
+        # Serialize the database state using the user-provided arguments
+        serialized = json.dumps(data, **self.kwargs)
+    
+        # Write the serialized data to the file
+        try:
+            self._handle.write(serialized)
+        except io.UnsupportedOperation:
+            raise IOError('Cannot write to the database. Access mode is "{0}"'.format(self._mode))
+    
+        # Ensure the file has been written
+        self._handle.flush()
+>       os.fsync(self._handle.fileno())
+E       TypeError: fileno() returned a non-integer
+
+tinydb/storages.py:154: TypeError
+=============================== warnings summary ===============================
+generated_tests/python/test_storages.py::test_json_storage_unsupported_mode
+  /home/runner/work/tinydb/tinydb/tinydb/storages.py:106: UserWarning: Using an `access_mode` other than 'r', 'rb', 'r+' or 'rb+' can cause data loss or corruption
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+
+---------- coverage: platform linux, python 3.8.18-final-0 -----------
+
+=========================== short test summary info ============================
+FAILED generated_tests/python/test_storages.py::test_memory_storage_read_write[data0-None] - assert {} == None
+ +  where {} = read()
+ +    where read = <tinydb.storages.MemoryStorage object at 0x7f7b2f7f6bb0>.read
+FAILED generated_tests/python/test_storages.py::test_json_storage_unsupported_mode - Failed: DID NOT RAISE <class 'OSError'>
+FAILED generated_tests/python/test_storages.py::test_json_storage_write_error - TypeError: fileno() returned a non-integer
+=================== 3 failed, 11 passed, 1 warning in 0.14s ====================
