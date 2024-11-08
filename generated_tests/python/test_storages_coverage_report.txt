@@ -1,0 +1,111 @@
+============================= test session starts ==============================
+platform linux -- Python 3.8.18, pytest-8.3.3, pluggy-1.5.0
+rootdir: /home/runner/work/tinydb/tinydb
+configfile: ov-report=term-missing
+plugins: cov-5.0.0
+collected 13 items
+
+generated_tests/python/test_storages.py ....E.F....EFWARNING: Failed to generate report: No data to report.
+
+                                                                         [100%]
+
+==================================== ERRORS ====================================
+_____________ ERROR at setup of test_jsonstorage_init_creates_file _____________
+file /home/runner/work/tinydb/tinydb/generated_tests/python/test_storages.py, line 44
+  def test_jsonstorage_init_creates_file(mocker, temp_file):
+E       fixture 'mocker' not found
+>       available fixtures: cache, capfd, capfdbinary, caplog, capsys, capsysbinary, cov, doctest_namespace, monkeypatch, no_cover, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, temp_file, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/work/tinydb/tinydb/generated_tests/python/test_storages.py:44
+___________________ ERROR at setup of test_jsonstorage_close ___________________
+file /home/runner/work/tinydb/tinydb/generated_tests/python/test_storages.py, line 91
+  def test_jsonstorage_close(mocker, temp_file):
+E       fixture 'mocker' not found
+>       available fixtures: cache, capfd, capfdbinary, caplog, capsys, capsysbinary, cov, doctest_namespace, monkeypatch, no_cover, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, temp_file, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/work/tinydb/tinydb/generated_tests/python/test_storages.py:91
+=================================== FAILURES ===================================
+_________ test_jsonstorage_write_unsupported_operation_raises_ioerror __________
+
+temp_file = PosixPath('/tmp/pytest-of-runner/pytest-0/test_jsonstorage_write_unsuppo0/temp_file.json')
+
+    def test_jsonstorage_write_unsupported_operation_raises_ioerror(temp_file):
+>       storage = JSONStorage(str(temp_file), access_mode='r')
+
+generated_tests/python/test_storages.py:59: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tinydb.storages.JSONStorage object at 0x7fc1d68ef520>
+path = '/tmp/pytest-of-runner/pytest-0/test_jsonstorage_write_unsuppo0/temp_file.json'
+create_dirs = False, encoding = None, access_mode = 'r', kwargs = {}
+
+    def __init__(self, path: str, create_dirs=False, encoding=None, access_mode='r+', **kwargs):
+        """
+        Create a new instance.
+    
+        Also creates the storage file, if it doesn't exist and the access mode
+        is appropriate for writing.
+    
+        Note: Using an access mode other than `r` or `r+` will probably lead to
+        data loss or data corruption!
+    
+        :param path: Where to store the JSON data.
+        :param access_mode: mode in which the file is opened (r, r+)
+        :type access_mode: str
+        """
+    
+        super().__init__()
+    
+        self._mode = access_mode
+        self.kwargs = kwargs
+    
+        if access_mode not in ('r', 'rb', 'r+', 'rb+'):
+            warnings.warn(
+                'Using an `access_mode` other than \'r\', \'rb\', \'r+\' '
+                'or \'rb+\' can cause data loss or corruption'
+            )
+    
+        # Create the file if it doesn't exist and creating is allowed by the
+        # access mode
+        if any([character in self._mode for character in ('+', 'w', 'a')]):  # any of the writing modes
+            touch(path, create_dirs=create_dirs)
+    
+        # Open the file for reading/writing
+>       self._handle = open(path, mode=self._mode, encoding=encoding)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/test_jsonstorage_write_unsuppo0/temp_file.json'
+
+tinydb/storages.py:117: FileNotFoundError
+_________________ test_jsonstorage_flush_and_truncate_on_write _________________
+
+temp_file = PosixPath('/tmp/pytest-of-runner/pytest-0/test_jsonstorage_flush_and_tru0/temp_file.json')
+
+    def test_jsonstorage_flush_and_truncate_on_write(temp_file):
+        data = {"key": "a" * 100}  # Long enough data
+        storage = JSONStorage(str(temp_file))
+        storage.write(data)  # This should flush and truncate the file
+        storage.write({"key": "shorter data"})  # Shorter data to ensure truncate works
+        with open(str(temp_file), 'r') as file:
+            content = file.read()
+>           assert "a" not in content  # Check that the file was truncated after writing shorter data
+E           assert 'a' not in '{"key": "shorter data"}'
+E             
+E             'a' is contained here:
+E               {"key": "shorter data"}
+E             ?                   +
+
+generated_tests/python/test_storages.py:105: AssertionError
+
+---------- coverage: platform linux, python 3.8.18-final-0 -----------
+
+=========================== short test summary info ============================
+FAILED generated_tests/python/test_storages.py::test_jsonstorage_write_unsupported_operation_raises_ioerror - FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/test_jsonstorage_write_unsuppo0/temp_file.json'
+FAILED generated_tests/python/test_storages.py::test_jsonstorage_flush_and_truncate_on_write - assert 'a' not in '{"key": "shorter data"}'
+  
+  'a' is contained here:
+    {"key": "shorter data"}
+  ?                   +
+ERROR generated_tests/python/test_storages.py::test_jsonstorage_init_creates_file
+ERROR generated_tests/python/test_storages.py::test_jsonstorage_close
+==================== 2 failed, 9 passed, 2 errors in 0.13s =====================
