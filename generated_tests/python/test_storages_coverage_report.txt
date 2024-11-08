@@ -1,0 +1,89 @@
+============================= test session starts ==============================
+platform linux -- Python 3.8.18, pytest-8.3.3, pluggy-1.5.0
+rootdir: /home/runner/work/tinydb/tinydb
+configfile: ov-report=term-missing
+plugins: cov-5.0.0
+collected 12 items
+
+generated_tests/python/test_storages.py EEEEE....EEEWARNING: Failed to generate report: No data to report.
+
+                                                                         [100%]
+
+==================================== ERRORS ====================================
+_____________ ERROR at setup of test_jsonstorage_init_creates_file _____________
+file /home/runner/work/tinydb/tinydb/generated_tests/python/test_storages.py, line 13
+  def test_jsonstorage_init_creates_file(mocker):
+E       fixture 'mocker' not found
+>       available fixtures: cache, capfd, capfdbinary, caplog, capsys, capsysbinary, cov, doctest_namespace, monkeypatch, no_cover, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/work/tinydb/tinydb/generated_tests/python/test_storages.py:13
+______________ ERROR at setup of test_jsonstorage_read_empty_file ______________
+file /home/runner/work/tinydb/tinydb/generated_tests/python/test_storages.py, line 18
+  def test_jsonstorage_read_empty_file(mocker):
+E       fixture 'mocker' not found
+>       available fixtures: cache, capfd, capfdbinary, caplog, capsys, capsysbinary, cov, doctest_namespace, monkeypatch, no_cover, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/work/tinydb/tinydb/generated_tests/python/test_storages.py:18
+______________ ERROR at setup of test_jsonstorage_read_valid_data ______________
+file /home/runner/work/tinydb/tinydb/generated_tests/python/test_storages.py, line 23
+  def test_jsonstorage_read_valid_data(mocker):
+E       fixture 'mocker' not found
+>       available fixtures: cache, capfd, capfdbinary, caplog, capsys, capsysbinary, cov, doctest_namespace, monkeypatch, no_cover, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/work/tinydb/tinydb/generated_tests/python/test_storages.py:23
+___________________ ERROR at setup of test_jsonstorage_write ___________________
+file /home/runner/work/tinydb/tinydb/generated_tests/python/test_storages.py, line 29
+  def test_jsonstorage_write(mocker):
+E       fixture 'mocker' not found
+>       available fixtures: cache, capfd, capfdbinary, caplog, capsys, capsysbinary, cov, doctest_namespace, monkeypatch, no_cover, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/work/tinydb/tinydb/generated_tests/python/test_storages.py:29
+___________________ ERROR at setup of test_jsonstorage_close ___________________
+file /home/runner/work/tinydb/tinydb/generated_tests/python/test_storages.py, line 40
+  def test_jsonstorage_close(mocker):
+E       fixture 'mocker' not found
+>       available fixtures: cache, capfd, capfdbinary, caplog, capsys, capsysbinary, cov, doctest_namespace, monkeypatch, no_cover, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/work/tinydb/tinydb/generated_tests/python/test_storages.py:40
+_____ ERROR at setup of test_jsonstorage_init_invalid_mode_raises_warning ______
+file /home/runner/work/tinydb/tinydb/generated_tests/python/test_storages.py, line 77
+  def test_jsonstorage_init_invalid_mode_raises_warning(mocker):
+E       fixture 'mocker' not found
+>       available fixtures: cache, capfd, capfdbinary, caplog, capsys, capsysbinary, cov, doctest_namespace, monkeypatch, no_cover, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/work/tinydb/tinydb/generated_tests/python/test_storages.py:77
+________ ERROR at setup of test_jsonstorage_write_unsupported_operation ________
+file /home/runner/work/tinydb/tinydb/generated_tests/python/test_storages.py, line 82
+  def test_jsonstorage_write_unsupported_operation(mocker):
+E       fixture 'mocker' not found
+>       available fixtures: cache, capfd, capfdbinary, caplog, capsys, capsysbinary, cov, doctest_namespace, monkeypatch, no_cover, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/work/tinydb/tinydb/generated_tests/python/test_storages.py:82
+_____________ ERROR at setup of test_jsonstorage_read_invalid_json _____________
+file /home/runner/work/tinydb/tinydb/generated_tests/python/test_storages.py, line 90
+  def test_jsonstorage_read_invalid_json(mocker):
+E       fixture 'mocker' not found
+>       available fixtures: cache, capfd, capfdbinary, caplog, capsys, capsysbinary, cov, doctest_namespace, monkeypatch, no_cover, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
+>       use 'pytest --fixtures [testpath]' for help on them.
+
+/home/runner/work/tinydb/tinydb/generated_tests/python/test_storages.py:90
+
+---------- coverage: platform linux, python 3.8.18-final-0 -----------
+
+=========================== short test summary info ============================
+ERROR generated_tests/python/test_storages.py::test_jsonstorage_init_creates_file
+ERROR generated_tests/python/test_storages.py::test_jsonstorage_read_empty_file
+ERROR generated_tests/python/test_storages.py::test_jsonstorage_read_valid_data
+ERROR generated_tests/python/test_storages.py::test_jsonstorage_write
+ERROR generated_tests/python/test_storages.py::test_jsonstorage_close
+ERROR generated_tests/python/test_storages.py::test_jsonstorage_init_invalid_mode_raises_warning
+ERROR generated_tests/python/test_storages.py::test_jsonstorage_write_unsupported_operation
+ERROR generated_tests/python/test_storages.py::test_jsonstorage_read_invalid_json
+========================= 4 passed, 8 errors in 0.19s ==========================
