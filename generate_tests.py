@@ -197,7 +197,7 @@ class TestGenerator:
 
            base_name = str(base_name).replace(current_path,'').replace('/', '.')
            
-           base_name = base_name.replace(file_name,"") #if (base_name) should still have .
+           base_name = base_name.replace(file_name,"").replace(".py","") #if (base_name) should still have .
            if (base_name==""):
                base_name="."
         else:
