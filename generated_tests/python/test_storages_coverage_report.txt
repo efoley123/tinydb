@@ -1,0 +1,813 @@
+============================= test session starts ==============================
+platform linux -- Python 3.8.18, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.8.18/x64/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/work/tinydb/tinydb
+configfile: pytest.ini
+plugins: cov-5.0.0
+collecting ... collected 16 items
+
+generated_tests/python/test_storages.py::test_touch_create_file ERROR    [  6%]
+generated_tests/python/test_storages.py::test_touch_create_dirs ERROR    [ 12%]
+generated_tests/python/test_storages.py::test_json_storage_read_write ERROR [ 18%]
+generated_tests/python/test_storages.py::test_json_storage_write_error ERROR [ 25%]
+generated_tests/python/test_storages.py::test_json_storage_empty_file ERROR [ 31%]
+generated_tests/python/test_storages.py::test_memory_storage_read_write ERROR [ 37%]
+generated_tests/python/test_storages.py::test_memory_storage_initial_state ERROR [ 43%]
+generated_tests/python/test_storages.py::test_json_storage_unsupported_operation ERROR [ 50%]
+generated_tests/python/test_storages.py::test_json_storage_warning_on_dangerous_access_mode[w] ERROR [ 56%]
+generated_tests/python/test_storages.py::test_json_storage_warning_on_dangerous_access_mode[a] ERROR [ 62%]
+generated_tests/python/test_storages.py::test_json_storage_warning_on_dangerous_access_mode[x] ERROR [ 68%]
+generated_tests/python/test_storages.py::test_storage_class_abstract_methods ERROR [ 75%]
+generated_tests/python/test_storages.py::test_touch_existing_file ERROR  [ 81%]
+generated_tests/python/test_storages.py::test_json_storage_incorrect_encoding ERROR [ 87%]
+generated_tests/python/test_storages.py::test_json_storage_close_method ERROR [ 93%]
+generated_tests/python/test_storages.py::test_with_file_setup_teardown ERROR [100%]
+
+==================================== ERRORS ====================================
+___________________ ERROR at setup of test_touch_create_file ___________________
+
+function = <function test_touch_create_file at 0x7f5148115a60>
+
+    def setup_function(function):
+        """
+        Setup for tests that require a file.
+        """
+>       touch('temp_test_file.json', create_dirs=True)
+
+generated_tests/python/test_storages.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/storages.py:29: in touch
+    os.makedirs(base_dir)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '', mode = 511, exist_ok = False
+
+    def makedirs(name, mode=0o777, exist_ok=False):
+        """makedirs(name [, mode=0o777][, exist_ok=False])
+    
+        Super-mkdir; create a leaf directory and all intermediate ones.  Works like
+        mkdir, except that any intermediate path segment (not just the rightmost)
+        will be created if it does not exist. If the target directory already
+        exists, raise an OSError if exist_ok is False. Otherwise no exception is
+        raised.  This is recursive.
+    
+        """
+        head, tail = path.split(name)
+        if not tail:
+            head, tail = path.split(head)
+        if head and tail and not path.exists(head):
+            try:
+                makedirs(head, exist_ok=exist_ok)
+            except FileExistsError:
+                # Defeats race condition when another thread created the path
+                pass
+            cdir = curdir
+            if isinstance(tail, bytes):
+                cdir = bytes(curdir, 'ASCII')
+            if tail == cdir:           # xxx/newdir/. exists if xxx/newdir exists
+                return
+        try:
+>           mkdir(name, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: ''
+
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/os.py:223: FileNotFoundError
+___________________ ERROR at setup of test_touch_create_dirs ___________________
+
+function = <function test_touch_create_dirs at 0x7f5148115c10>
+
+    def setup_function(function):
+        """
+        Setup for tests that require a file.
+        """
+>       touch('temp_test_file.json', create_dirs=True)
+
+generated_tests/python/test_storages.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/storages.py:29: in touch
+    os.makedirs(base_dir)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '', mode = 511, exist_ok = False
+
+    def makedirs(name, mode=0o777, exist_ok=False):
+        """makedirs(name [, mode=0o777][, exist_ok=False])
+    
+        Super-mkdir; create a leaf directory and all intermediate ones.  Works like
+        mkdir, except that any intermediate path segment (not just the rightmost)
+        will be created if it does not exist. If the target directory already
+        exists, raise an OSError if exist_ok is False. Otherwise no exception is
+        raised.  This is recursive.
+    
+        """
+        head, tail = path.split(name)
+        if not tail:
+            head, tail = path.split(head)
+        if head and tail and not path.exists(head):
+            try:
+                makedirs(head, exist_ok=exist_ok)
+            except FileExistsError:
+                # Defeats race condition when another thread created the path
+                pass
+            cdir = curdir
+            if isinstance(tail, bytes):
+                cdir = bytes(curdir, 'ASCII')
+            if tail == cdir:           # xxx/newdir/. exists if xxx/newdir exists
+                return
+        try:
+>           mkdir(name, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: ''
+
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/os.py:223: FileNotFoundError
+________________ ERROR at setup of test_json_storage_read_write ________________
+
+function = <function test_json_storage_read_write at 0x7f51480cdb80>
+
+    def setup_function(function):
+        """
+        Setup for tests that require a file.
+        """
+>       touch('temp_test_file.json', create_dirs=True)
+
+generated_tests/python/test_storages.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/storages.py:29: in touch
+    os.makedirs(base_dir)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '', mode = 511, exist_ok = False
+
+    def makedirs(name, mode=0o777, exist_ok=False):
+        """makedirs(name [, mode=0o777][, exist_ok=False])
+    
+        Super-mkdir; create a leaf directory and all intermediate ones.  Works like
+        mkdir, except that any intermediate path segment (not just the rightmost)
+        will be created if it does not exist. If the target directory already
+        exists, raise an OSError if exist_ok is False. Otherwise no exception is
+        raised.  This is recursive.
+    
+        """
+        head, tail = path.split(name)
+        if not tail:
+            head, tail = path.split(head)
+        if head and tail and not path.exists(head):
+            try:
+                makedirs(head, exist_ok=exist_ok)
+            except FileExistsError:
+                # Defeats race condition when another thread created the path
+                pass
+            cdir = curdir
+            if isinstance(tail, bytes):
+                cdir = bytes(curdir, 'ASCII')
+            if tail == cdir:           # xxx/newdir/. exists if xxx/newdir exists
+                return
+        try:
+>           mkdir(name, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: ''
+
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/os.py:223: FileNotFoundError
+_______________ ERROR at setup of test_json_storage_write_error ________________
+
+function = <function test_json_storage_write_error at 0x7f51480cdc10>
+
+    def setup_function(function):
+        """
+        Setup for tests that require a file.
+        """
+>       touch('temp_test_file.json', create_dirs=True)
+
+generated_tests/python/test_storages.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/storages.py:29: in touch
+    os.makedirs(base_dir)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '', mode = 511, exist_ok = False
+
+    def makedirs(name, mode=0o777, exist_ok=False):
+        """makedirs(name [, mode=0o777][, exist_ok=False])
+    
+        Super-mkdir; create a leaf directory and all intermediate ones.  Works like
+        mkdir, except that any intermediate path segment (not just the rightmost)
+        will be created if it does not exist. If the target directory already
+        exists, raise an OSError if exist_ok is False. Otherwise no exception is
+        raised.  This is recursive.
+    
+        """
+        head, tail = path.split(name)
+        if not tail:
+            head, tail = path.split(head)
+        if head and tail and not path.exists(head):
+            try:
+                makedirs(head, exist_ok=exist_ok)
+            except FileExistsError:
+                # Defeats race condition when another thread created the path
+                pass
+            cdir = curdir
+            if isinstance(tail, bytes):
+                cdir = bytes(curdir, 'ASCII')
+            if tail == cdir:           # xxx/newdir/. exists if xxx/newdir exists
+                return
+        try:
+>           mkdir(name, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: ''
+
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/os.py:223: FileNotFoundError
+________________ ERROR at setup of test_json_storage_empty_file ________________
+
+function = <function test_json_storage_empty_file at 0x7f51480cdca0>
+
+    def setup_function(function):
+        """
+        Setup for tests that require a file.
+        """
+>       touch('temp_test_file.json', create_dirs=True)
+
+generated_tests/python/test_storages.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/storages.py:29: in touch
+    os.makedirs(base_dir)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '', mode = 511, exist_ok = False
+
+    def makedirs(name, mode=0o777, exist_ok=False):
+        """makedirs(name [, mode=0o777][, exist_ok=False])
+    
+        Super-mkdir; create a leaf directory and all intermediate ones.  Works like
+        mkdir, except that any intermediate path segment (not just the rightmost)
+        will be created if it does not exist. If the target directory already
+        exists, raise an OSError if exist_ok is False. Otherwise no exception is
+        raised.  This is recursive.
+    
+        """
+        head, tail = path.split(name)
+        if not tail:
+            head, tail = path.split(head)
+        if head and tail and not path.exists(head):
+            try:
+                makedirs(head, exist_ok=exist_ok)
+            except FileExistsError:
+                # Defeats race condition when another thread created the path
+                pass
+            cdir = curdir
+            if isinstance(tail, bytes):
+                cdir = bytes(curdir, 'ASCII')
+            if tail == cdir:           # xxx/newdir/. exists if xxx/newdir exists
+                return
+        try:
+>           mkdir(name, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: ''
+
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/os.py:223: FileNotFoundError
+_______________ ERROR at setup of test_memory_storage_read_write _______________
+
+function = <function test_memory_storage_read_write at 0x7f51480cdd30>
+
+    def setup_function(function):
+        """
+        Setup for tests that require a file.
+        """
+>       touch('temp_test_file.json', create_dirs=True)
+
+generated_tests/python/test_storages.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/storages.py:29: in touch
+    os.makedirs(base_dir)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '', mode = 511, exist_ok = False
+
+    def makedirs(name, mode=0o777, exist_ok=False):
+        """makedirs(name [, mode=0o777][, exist_ok=False])
+    
+        Super-mkdir; create a leaf directory and all intermediate ones.  Works like
+        mkdir, except that any intermediate path segment (not just the rightmost)
+        will be created if it does not exist. If the target directory already
+        exists, raise an OSError if exist_ok is False. Otherwise no exception is
+        raised.  This is recursive.
+    
+        """
+        head, tail = path.split(name)
+        if not tail:
+            head, tail = path.split(head)
+        if head and tail and not path.exists(head):
+            try:
+                makedirs(head, exist_ok=exist_ok)
+            except FileExistsError:
+                # Defeats race condition when another thread created the path
+                pass
+            cdir = curdir
+            if isinstance(tail, bytes):
+                cdir = bytes(curdir, 'ASCII')
+            if tail == cdir:           # xxx/newdir/. exists if xxx/newdir exists
+                return
+        try:
+>           mkdir(name, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: ''
+
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/os.py:223: FileNotFoundError
+_____________ ERROR at setup of test_memory_storage_initial_state ______________
+
+function = <function test_memory_storage_initial_state at 0x7f51480cddc0>
+
+    def setup_function(function):
+        """
+        Setup for tests that require a file.
+        """
+>       touch('temp_test_file.json', create_dirs=True)
+
+generated_tests/python/test_storages.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/storages.py:29: in touch
+    os.makedirs(base_dir)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '', mode = 511, exist_ok = False
+
+    def makedirs(name, mode=0o777, exist_ok=False):
+        """makedirs(name [, mode=0o777][, exist_ok=False])
+    
+        Super-mkdir; create a leaf directory and all intermediate ones.  Works like
+        mkdir, except that any intermediate path segment (not just the rightmost)
+        will be created if it does not exist. If the target directory already
+        exists, raise an OSError if exist_ok is False. Otherwise no exception is
+        raised.  This is recursive.
+    
+        """
+        head, tail = path.split(name)
+        if not tail:
+            head, tail = path.split(head)
+        if head and tail and not path.exists(head):
+            try:
+                makedirs(head, exist_ok=exist_ok)
+            except FileExistsError:
+                # Defeats race condition when another thread created the path
+                pass
+            cdir = curdir
+            if isinstance(tail, bytes):
+                cdir = bytes(curdir, 'ASCII')
+            if tail == cdir:           # xxx/newdir/. exists if xxx/newdir exists
+                return
+        try:
+>           mkdir(name, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: ''
+
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/os.py:223: FileNotFoundError
+__________ ERROR at setup of test_json_storage_unsupported_operation ___________
+
+function = <function test_json_storage_unsupported_operation at 0x7f51480cde50>
+
+    def setup_function(function):
+        """
+        Setup for tests that require a file.
+        """
+>       touch('temp_test_file.json', create_dirs=True)
+
+generated_tests/python/test_storages.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/storages.py:29: in touch
+    os.makedirs(base_dir)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '', mode = 511, exist_ok = False
+
+    def makedirs(name, mode=0o777, exist_ok=False):
+        """makedirs(name [, mode=0o777][, exist_ok=False])
+    
+        Super-mkdir; create a leaf directory and all intermediate ones.  Works like
+        mkdir, except that any intermediate path segment (not just the rightmost)
+        will be created if it does not exist. If the target directory already
+        exists, raise an OSError if exist_ok is False. Otherwise no exception is
+        raised.  This is recursive.
+    
+        """
+        head, tail = path.split(name)
+        if not tail:
+            head, tail = path.split(head)
+        if head and tail and not path.exists(head):
+            try:
+                makedirs(head, exist_ok=exist_ok)
+            except FileExistsError:
+                # Defeats race condition when another thread created the path
+                pass
+            cdir = curdir
+            if isinstance(tail, bytes):
+                cdir = bytes(curdir, 'ASCII')
+            if tail == cdir:           # xxx/newdir/. exists if xxx/newdir exists
+                return
+        try:
+>           mkdir(name, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: ''
+
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/os.py:223: FileNotFoundError
+___ ERROR at setup of test_json_storage_warning_on_dangerous_access_mode[w] ____
+
+function = <function test_json_storage_warning_on_dangerous_access_mode at 0x7f51480cdee0>
+
+    def setup_function(function):
+        """
+        Setup for tests that require a file.
+        """
+>       touch('temp_test_file.json', create_dirs=True)
+
+generated_tests/python/test_storages.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/storages.py:29: in touch
+    os.makedirs(base_dir)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '', mode = 511, exist_ok = False
+
+    def makedirs(name, mode=0o777, exist_ok=False):
+        """makedirs(name [, mode=0o777][, exist_ok=False])
+    
+        Super-mkdir; create a leaf directory and all intermediate ones.  Works like
+        mkdir, except that any intermediate path segment (not just the rightmost)
+        will be created if it does not exist. If the target directory already
+        exists, raise an OSError if exist_ok is False. Otherwise no exception is
+        raised.  This is recursive.
+    
+        """
+        head, tail = path.split(name)
+        if not tail:
+            head, tail = path.split(head)
+        if head and tail and not path.exists(head):
+            try:
+                makedirs(head, exist_ok=exist_ok)
+            except FileExistsError:
+                # Defeats race condition when another thread created the path
+                pass
+            cdir = curdir
+            if isinstance(tail, bytes):
+                cdir = bytes(curdir, 'ASCII')
+            if tail == cdir:           # xxx/newdir/. exists if xxx/newdir exists
+                return
+        try:
+>           mkdir(name, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: ''
+
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/os.py:223: FileNotFoundError
+___ ERROR at setup of test_json_storage_warning_on_dangerous_access_mode[a] ____
+
+function = <function test_json_storage_warning_on_dangerous_access_mode at 0x7f51480cdee0>
+
+    def setup_function(function):
+        """
+        Setup for tests that require a file.
+        """
+>       touch('temp_test_file.json', create_dirs=True)
+
+generated_tests/python/test_storages.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/storages.py:29: in touch
+    os.makedirs(base_dir)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '', mode = 511, exist_ok = False
+
+    def makedirs(name, mode=0o777, exist_ok=False):
+        """makedirs(name [, mode=0o777][, exist_ok=False])
+    
+        Super-mkdir; create a leaf directory and all intermediate ones.  Works like
+        mkdir, except that any intermediate path segment (not just the rightmost)
+        will be created if it does not exist. If the target directory already
+        exists, raise an OSError if exist_ok is False. Otherwise no exception is
+        raised.  This is recursive.
+    
+        """
+        head, tail = path.split(name)
+        if not tail:
+            head, tail = path.split(head)
+        if head and tail and not path.exists(head):
+            try:
+                makedirs(head, exist_ok=exist_ok)
+            except FileExistsError:
+                # Defeats race condition when another thread created the path
+                pass
+            cdir = curdir
+            if isinstance(tail, bytes):
+                cdir = bytes(curdir, 'ASCII')
+            if tail == cdir:           # xxx/newdir/. exists if xxx/newdir exists
+                return
+        try:
+>           mkdir(name, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: ''
+
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/os.py:223: FileNotFoundError
+___ ERROR at setup of test_json_storage_warning_on_dangerous_access_mode[x] ____
+
+function = <function test_json_storage_warning_on_dangerous_access_mode at 0x7f51480cdee0>
+
+    def setup_function(function):
+        """
+        Setup for tests that require a file.
+        """
+>       touch('temp_test_file.json', create_dirs=True)
+
+generated_tests/python/test_storages.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/storages.py:29: in touch
+    os.makedirs(base_dir)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '', mode = 511, exist_ok = False
+
+    def makedirs(name, mode=0o777, exist_ok=False):
+        """makedirs(name [, mode=0o777][, exist_ok=False])
+    
+        Super-mkdir; create a leaf directory and all intermediate ones.  Works like
+        mkdir, except that any intermediate path segment (not just the rightmost)
+        will be created if it does not exist. If the target directory already
+        exists, raise an OSError if exist_ok is False. Otherwise no exception is
+        raised.  This is recursive.
+    
+        """
+        head, tail = path.split(name)
+        if not tail:
+            head, tail = path.split(head)
+        if head and tail and not path.exists(head):
+            try:
+                makedirs(head, exist_ok=exist_ok)
+            except FileExistsError:
+                # Defeats race condition when another thread created the path
+                pass
+            cdir = curdir
+            if isinstance(tail, bytes):
+                cdir = bytes(curdir, 'ASCII')
+            if tail == cdir:           # xxx/newdir/. exists if xxx/newdir exists
+                return
+        try:
+>           mkdir(name, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: ''
+
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/os.py:223: FileNotFoundError
+____________ ERROR at setup of test_storage_class_abstract_methods _____________
+
+function = <function test_storage_class_abstract_methods at 0x7f51480cdf70>
+
+    def setup_function(function):
+        """
+        Setup for tests that require a file.
+        """
+>       touch('temp_test_file.json', create_dirs=True)
+
+generated_tests/python/test_storages.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/storages.py:29: in touch
+    os.makedirs(base_dir)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '', mode = 511, exist_ok = False
+
+    def makedirs(name, mode=0o777, exist_ok=False):
+        """makedirs(name [, mode=0o777][, exist_ok=False])
+    
+        Super-mkdir; create a leaf directory and all intermediate ones.  Works like
+        mkdir, except that any intermediate path segment (not just the rightmost)
+        will be created if it does not exist. If the target directory already
+        exists, raise an OSError if exist_ok is False. Otherwise no exception is
+        raised.  This is recursive.
+    
+        """
+        head, tail = path.split(name)
+        if not tail:
+            head, tail = path.split(head)
+        if head and tail and not path.exists(head):
+            try:
+                makedirs(head, exist_ok=exist_ok)
+            except FileExistsError:
+                # Defeats race condition when another thread created the path
+                pass
+            cdir = curdir
+            if isinstance(tail, bytes):
+                cdir = bytes(curdir, 'ASCII')
+            if tail == cdir:           # xxx/newdir/. exists if xxx/newdir exists
+                return
+        try:
+>           mkdir(name, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: ''
+
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/os.py:223: FileNotFoundError
+__________________ ERROR at setup of test_touch_existing_file __________________
+
+function = <function test_touch_existing_file at 0x7f51480cf040>
+
+    def setup_function(function):
+        """
+        Setup for tests that require a file.
+        """
+>       touch('temp_test_file.json', create_dirs=True)
+
+generated_tests/python/test_storages.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/storages.py:29: in touch
+    os.makedirs(base_dir)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '', mode = 511, exist_ok = False
+
+    def makedirs(name, mode=0o777, exist_ok=False):
+        """makedirs(name [, mode=0o777][, exist_ok=False])
+    
+        Super-mkdir; create a leaf directory and all intermediate ones.  Works like
+        mkdir, except that any intermediate path segment (not just the rightmost)
+        will be created if it does not exist. If the target directory already
+        exists, raise an OSError if exist_ok is False. Otherwise no exception is
+        raised.  This is recursive.
+    
+        """
+        head, tail = path.split(name)
+        if not tail:
+            head, tail = path.split(head)
+        if head and tail and not path.exists(head):
+            try:
+                makedirs(head, exist_ok=exist_ok)
+            except FileExistsError:
+                # Defeats race condition when another thread created the path
+                pass
+            cdir = curdir
+            if isinstance(tail, bytes):
+                cdir = bytes(curdir, 'ASCII')
+            if tail == cdir:           # xxx/newdir/. exists if xxx/newdir exists
+                return
+        try:
+>           mkdir(name, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: ''
+
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/os.py:223: FileNotFoundError
+____________ ERROR at setup of test_json_storage_incorrect_encoding ____________
+
+function = <function test_json_storage_incorrect_encoding at 0x7f51480cf0d0>
+
+    def setup_function(function):
+        """
+        Setup for tests that require a file.
+        """
+>       touch('temp_test_file.json', create_dirs=True)
+
+generated_tests/python/test_storages.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/storages.py:29: in touch
+    os.makedirs(base_dir)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '', mode = 511, exist_ok = False
+
+    def makedirs(name, mode=0o777, exist_ok=False):
+        """makedirs(name [, mode=0o777][, exist_ok=False])
+    
+        Super-mkdir; create a leaf directory and all intermediate ones.  Works like
+        mkdir, except that any intermediate path segment (not just the rightmost)
+        will be created if it does not exist. If the target directory already
+        exists, raise an OSError if exist_ok is False. Otherwise no exception is
+        raised.  This is recursive.
+    
+        """
+        head, tail = path.split(name)
+        if not tail:
+            head, tail = path.split(head)
+        if head and tail and not path.exists(head):
+            try:
+                makedirs(head, exist_ok=exist_ok)
+            except FileExistsError:
+                # Defeats race condition when another thread created the path
+                pass
+            cdir = curdir
+            if isinstance(tail, bytes):
+                cdir = bytes(curdir, 'ASCII')
+            if tail == cdir:           # xxx/newdir/. exists if xxx/newdir exists
+                return
+        try:
+>           mkdir(name, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: ''
+
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/os.py:223: FileNotFoundError
+_______________ ERROR at setup of test_json_storage_close_method _______________
+
+function = <function test_json_storage_close_method at 0x7f51480cf160>
+
+    def setup_function(function):
+        """
+        Setup for tests that require a file.
+        """
+>       touch('temp_test_file.json', create_dirs=True)
+
+generated_tests/python/test_storages.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/storages.py:29: in touch
+    os.makedirs(base_dir)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '', mode = 511, exist_ok = False
+
+    def makedirs(name, mode=0o777, exist_ok=False):
+        """makedirs(name [, mode=0o777][, exist_ok=False])
+    
+        Super-mkdir; create a leaf directory and all intermediate ones.  Works like
+        mkdir, except that any intermediate path segment (not just the rightmost)
+        will be created if it does not exist. If the target directory already
+        exists, raise an OSError if exist_ok is False. Otherwise no exception is
+        raised.  This is recursive.
+    
+        """
+        head, tail = path.split(name)
+        if not tail:
+            head, tail = path.split(head)
+        if head and tail and not path.exists(head):
+            try:
+                makedirs(head, exist_ok=exist_ok)
+            except FileExistsError:
+                # Defeats race condition when another thread created the path
+                pass
+            cdir = curdir
+            if isinstance(tail, bytes):
+                cdir = bytes(curdir, 'ASCII')
+            if tail == cdir:           # xxx/newdir/. exists if xxx/newdir exists
+                return
+        try:
+>           mkdir(name, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: ''
+
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/os.py:223: FileNotFoundError
+_______________ ERROR at setup of test_with_file_setup_teardown ________________
+
+function = <function test_with_file_setup_teardown at 0x7f51480cf310>
+
+    def setup_function(function):
+        """
+        Setup for tests that require a file.
+        """
+>       touch('temp_test_file.json', create_dirs=True)
+
+generated_tests/python/test_storages.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/storages.py:29: in touch
+    os.makedirs(base_dir)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '', mode = 511, exist_ok = False
+
+    def makedirs(name, mode=0o777, exist_ok=False):
+        """makedirs(name [, mode=0o777][, exist_ok=False])
+    
+        Super-mkdir; create a leaf directory and all intermediate ones.  Works like
+        mkdir, except that any intermediate path segment (not just the rightmost)
+        will be created if it does not exist. If the target directory already
+        exists, raise an OSError if exist_ok is False. Otherwise no exception is
+        raised.  This is recursive.
+    
+        """
+        head, tail = path.split(name)
+        if not tail:
+            head, tail = path.split(head)
+        if head and tail and not path.exists(head):
+            try:
+                makedirs(head, exist_ok=exist_ok)
+            except FileExistsError:
+                # Defeats race condition when another thread created the path
+                pass
+            cdir = curdir
+            if isinstance(tail, bytes):
+                cdir = bytes(curdir, 'ASCII')
+            if tail == cdir:           # xxx/newdir/. exists if xxx/newdir exists
+                return
+        try:
+>           mkdir(name, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: ''
+
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/os.py:223: FileNotFoundError
+
+---------- coverage: platform linux, python 3.8.18-final-0 -----------
+Name                    Stmts   Miss Branch BrPart  Cover   Missing
+-------------------------------------------------------------------
+tinydb/__init__.py          5      0      0      0   100%
+tinydb/database.py         53     30     10      0    37%   91-97, 127-133, 161, 170-174, 185-202, 212, 229-230, 242, 248-249, 255, 268, 274
+tinydb/middlewares.py      33     33      6      0     0%   5-127
+tinydb/mypy_plugin.py      25     25      2      0     0%   1-38
+tinydb/operations.py       24     24      0      0     0%   12-69
+tinydb/queries.py         124     84     70      2    22%   28, 50->exit, 52->exit, 73-74, 77, 86, 92, 98-101, 109-113, 119-123, 126-127, 165-171, 180, 186-194, 205, 221-238, 251, 264, 277, 290, 303, 316, 327, 341-347, 360-366, 388, 415-423, 448-456, 469, 475-482, 495, 505-514, 520
+tinydb/storages.py         57     30      9      2    44%   33-34, 77, 100-117, 120, 125-137, 141-158, 171-172, 175, 178
+tinydb/table.py           216    181    102      0    11%   35-36, 109-116, 132, 139, 150-179, 188-223, 237, 249-281, 302-344, 360-368, 387-459, 474-511, 528-552, 566-615, 623-626, 635, 642, 649, 659-661, 669-696, 708-721, 737-773
+tinydb/utils.py            73     37     20      1    40%   33, 54-55, 59, 63, 66, 69, 72, 75, 78, 81-85, 88, 91-98, 101-111, 125, 128, 138, 141, 148-159
+tinydb/version.py           1      0      0      0   100%
+-------------------------------------------------------------------
+TOTAL                     611    444    219      5    21%
+
+=========================== short test summary info ============================
+ERROR generated_tests/python/test_storages.py::test_touch_create_file - FileNotFoundError: [Errno 2] No such file or directory: ''
+ERROR generated_tests/python/test_storages.py::test_touch_create_dirs - FileNotFoundError: [Errno 2] No such file or directory: ''
+ERROR generated_tests/python/test_storages.py::test_json_storage_read_write - FileNotFoundError: [Errno 2] No such file or directory: ''
+ERROR generated_tests/python/test_storages.py::test_json_storage_write_error - FileNotFoundError: [Errno 2] No such file or directory: ''
+ERROR generated_tests/python/test_storages.py::test_json_storage_empty_file - FileNotFoundError: [Errno 2] No such file or directory: ''
+ERROR generated_tests/python/test_storages.py::test_memory_storage_read_write - FileNotFoundError: [Errno 2] No such file or directory: ''
+ERROR generated_tests/python/test_storages.py::test_memory_storage_initial_state - FileNotFoundError: [Errno 2] No such file or directory: ''
+ERROR generated_tests/python/test_storages.py::test_json_storage_unsupported_operation - FileNotFoundError: [Errno 2] No such file or directory: ''
+ERROR generated_tests/python/test_storages.py::test_json_storage_warning_on_dangerous_access_mode[w] - FileNotFoundError: [Errno 2] No such file or directory: ''
+ERROR generated_tests/python/test_storages.py::test_json_storage_warning_on_dangerous_access_mode[a] - FileNotFoundError: [Errno 2] No such file or directory: ''
+ERROR generated_tests/python/test_storages.py::test_json_storage_warning_on_dangerous_access_mode[x] - FileNotFoundError: [Errno 2] No such file or directory: ''
+ERROR generated_tests/python/test_storages.py::test_storage_class_abstract_methods - FileNotFoundError: [Errno 2] No such file or directory: ''
+ERROR generated_tests/python/test_storages.py::test_touch_existing_file - FileNotFoundError: [Errno 2] No such file or directory: ''
+ERROR generated_tests/python/test_storages.py::test_json_storage_incorrect_encoding - FileNotFoundError: [Errno 2] No such file or directory: ''
+ERROR generated_tests/python/test_storages.py::test_json_storage_close_method - FileNotFoundError: [Errno 2] No such file or directory: ''
+ERROR generated_tests/python/test_storages.py::test_with_file_setup_teardown - FileNotFoundError: [Errno 2] No such file or directory: ''
+============================== 16 errors in 0.59s ==============================
