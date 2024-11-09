@@ -192,12 +192,14 @@ class TestGenerator:
         report_file = test_file.parent / f"{test_file.stem}_coverage_report.txt"
         if language == "Python":
            # Get the full path of the base file and replace slashes with dots
-           current_path = str(os.path.dirname(os.path.abspath(__file__)))
-           base_name = Path(file_name).resolve().with_suffix('')  # Remove the .py extension
+           current_path = str(os.path.dirname(os.path.abspath(__file__)))  + "/"
+           base_name = Path(file_name).resolve()
 
            base_name = str(base_name).replace(current_path,'').replace('/', '.')
            
-           base_name = base_name.replace(file_name.replace(".py",""),"") #if (base_name) should still have .
+           base_name = base_name.replace(file_name,"") #if (base_name) should still have .
+           if (base_name==""):
+               base_name="."
         else:
            # For other languages, the base_name remains the stem of the file
            base_name = Path(file_name).stem
