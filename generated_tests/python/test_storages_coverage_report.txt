@@ -1,0 +1,120 @@
+============================= test session starts ==============================
+platform linux -- Python 3.8.18, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.8.18/x64/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/work/tinydb/tinydb
+configfile: pytest.ini
+plugins: cov-5.0.0
+collecting ... collected 0 items
+
+
+---------- coverage: platform linux, python 3.8.18-final-0 -----------
+Name                    Stmts   Miss  Cover   Missing
+-----------------------------------------------------
+tinydb/__init__.py          5      5     0%   27-32
+tinydb/database.py         53     53     0%   4-274
+tinydb/middlewares.py      33     33     0%   5-127
+tinydb/mypy_plugin.py      25     25     0%   1-38
+tinydb/operations.py       24     24     0%   12-69
+tinydb/queries.py         124    124     0%   19-520
+tinydb/storages.py         57     57     0%   7-178
+tinydb/table.py           216    216     0%   6-773
+tinydb/utils.py            73     73     0%   5-159
+tinydb/version.py           1      1     0%   1
+-----------------------------------------------------
+TOTAL                     611    611     0%
+
+============================ no tests ran in 0.10s =============================
+============================= test session starts ==============================
+platform linux -- Python 3.8.18, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.8.18/x64/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/work/tinydb/tinydb
+configfile: pytest.ini
+plugins: cov-5.0.0
+collecting ... collected 12 items
+
+generated_tests/python/test_storages.py::test_json_storage_init_creates_file PASSED [  8%]
+generated_tests/python/test_storages.py::test_json_storage_write_and_read PASSED [ 16%]
+generated_tests/python/test_storages.py::test_json_storage_write_unsupported_operation FAILED [ 25%]
+generated_tests/python/test_storages.py::test_json_storage_close PASSED  [ 33%]
+generated_tests/python/test_storages.py::test_json_storage_nonexisting_read PASSED [ 41%]
+generated_tests/python/test_storages.py::test_memory_storage_write_and_read PASSED [ 50%]
+generated_tests/python/test_storages.py::test_memory_storage_empty_read PASSED [ 58%]
+generated_tests/python/test_storages.py::test_storage_abstractmethod PASSED [ 66%]
+generated_tests/python/test_storages.py::test_touch_existing_file PASSED [ 75%]
+generated_tests/python/test_storages.py::test_touch_nonexisting_file PASSED [ 83%]
+generated_tests/python/test_storages.py::test_touch_create_dirs PASSED   [ 91%]
+generated_tests/python/test_storages.py::test_touch_no_create_dirs_missing PASSED [100%]
+
+=================================== FAILURES ===================================
+________________ test_json_storage_write_unsupported_operation _________________
+
+tmpdir = local('/tmp/pytest-of-runner/pytest-0/test_json_storage_write_unsupp0')
+
+    def test_json_storage_write_unsupported_operation(tmpdir):
+        """Test JSONStorage.write() raises IOError on unsupported operation."""
+        fpath = str(tmpdir.join("test.json"))
+>       storage = JSONStorage(fpath, access_mode="r")  # Read-only mode
+
+generated_tests/python/test_storages.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tinydb.storages.JSONStorage object at 0x7f2e744baee0>
+path = '/tmp/pytest-of-runner/pytest-0/test_json_storage_write_unsupp0/test.json'
+create_dirs = False, encoding = None, access_mode = 'r', kwargs = {}
+
+    def __init__(self, path: str, create_dirs=False, encoding=None, access_mode='r+', **kwargs):
+        """
+        Create a new instance.
+    
+        Also creates the storage file, if it doesn't exist and the access mode
+        is appropriate for writing.
+    
+        Note: Using an access mode other than `r` or `r+` will probably lead to
+        data loss or data corruption!
+    
+        :param path: Where to store the JSON data.
+        :param access_mode: mode in which the file is opened (r, r+)
+        :type access_mode: str
+        """
+    
+        super().__init__()
+    
+        self._mode = access_mode
+        self.kwargs = kwargs
+    
+        if access_mode not in ('r', 'rb', 'r+', 'rb+'):
+            warnings.warn(
+                'Using an `access_mode` other than \'r\', \'rb\', \'r+\' '
+                'or \'rb+\' can cause data loss or corruption'
+            )
+    
+        # Create the file if it doesn't exist and creating is allowed by the
+        # access mode
+        if any([character in self._mode for character in ('+', 'w', 'a')]):  # any of the writing modes
+            touch(path, create_dirs=create_dirs)
+    
+        # Open the file for reading/writing
+>       self._handle = open(path, mode=self._mode, encoding=encoding)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/test_json_storage_write_unsupp0/test.json'
+
+tinydb/storages.py:117: FileNotFoundError
+
+---------- coverage: platform linux, python 3.8.18-final-0 -----------
+Name                    Stmts   Miss Branch BrPart  Cover   Missing
+-------------------------------------------------------------------
+tinydb/__init__.py          5      0      0      0   100%
+tinydb/database.py         53     30     10      0    37%   91-97, 127-133, 161, 170-174, 185-202, 212, 229-230, 242, 248-249, 255, 268, 274
+tinydb/middlewares.py      33     33      6      0     0%   5-127
+tinydb/mypy_plugin.py      25     25      2      0     0%   1-38
+tinydb/operations.py       24     24      0      0     0%   12-69
+tinydb/queries.py         124     84     70      2    22%   28, 50->exit, 52->exit, 73-74, 77, 86, 92, 98-101, 109-113, 119-123, 126-127, 165-171, 180, 186-194, 205, 221-238, 251, 264, 277, 290, 303, 316, 327, 341-347, 360-366, 388, 415-423, 448-456, 469, 475-482, 495, 505-514, 520
+tinydb/storages.py         57      3      9      1    94%   28->33, 77, 149-150
+tinydb/table.py           216    181    102      0    11%   35-36, 109-116, 132, 139, 150-179, 188-223, 237, 249-281, 302-344, 360-368, 387-459, 474-511, 528-552, 566-615, 623-626, 635, 642, 649, 659-661, 669-696, 708-721, 737-773
+tinydb/utils.py            73     37     20      1    40%   33, 54-55, 59, 63, 66, 69, 72, 75, 78, 81-85, 88, 91-98, 101-111, 125, 128, 138, 141, 148-159
+tinydb/version.py           1      0      0      0   100%
+-------------------------------------------------------------------
+TOTAL                     611    417    219      4    25%
+
+=========================== short test summary info ============================
+FAILED generated_tests/python/test_storages.py::test_json_storage_write_unsupported_operation - FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/test_json_storage_write_unsupp0/test.json'
+========================= 1 failed, 11 passed in 0.21s =========================
