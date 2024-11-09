@@ -1,0 +1,203 @@
+============================= test session starts ==============================
+platform linux -- Python 3.8.18, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.8.18/x64/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/work/tinydb/tinydb
+configfile: pytest.ini
+plugins: cov-5.0.0
+collecting ... collected 0 items
+
+
+---------- coverage: platform linux, python 3.8.18-final-0 -----------
+Name                    Stmts   Miss  Cover   Missing
+-----------------------------------------------------
+tinydb/__init__.py          5      5     0%   27-32
+tinydb/database.py         53     53     0%   4-274
+tinydb/middlewares.py      33     33     0%   5-127
+tinydb/mypy_plugin.py      25     25     0%   1-38
+tinydb/operations.py       24     24     0%   12-69
+tinydb/queries.py         124    124     0%   19-520
+tinydb/storages.py         57     57     0%   6-177
+tinydb/table.py           216    216     0%   6-773
+tinydb/utils.py            73     73     0%   5-159
+tinydb/version.py           1      1     0%   1
+-----------------------------------------------------
+TOTAL                     611    611     0%
+
+============================ no tests ran in 0.10s =============================
+============================= test session starts ==============================
+platform linux -- Python 3.8.18, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.8.18/x64/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/work/tinydb/tinydb
+configfile: pytest.ini
+plugins: cov-5.0.0
+collecting ... collected 13 items
+
+generated_tests/python/test_storages.py::test_touch_creates_file_and_directories PASSED [  7%]
+generated_tests/python/test_storages.py::test_touch_does_not_create_directories_when_not_needed PASSED [ 15%]
+generated_tests/python/test_storages.py::test_json_storage_init_creates_file_if_not_exists FAILED [ 23%]
+generated_tests/python/test_storages.py::test_json_storage_write_and_read PASSED [ 30%]
+generated_tests/python/test_storages.py::test_json_storage_write_unsupported_operation_raises_ioerror FAILED [ 38%]
+generated_tests/python/test_storages.py::test_memory_storage_write_and_read PASSED [ 46%]
+generated_tests/python/test_storages.py::test_memory_storage_handles_different_data_types[None] PASSED [ 53%]
+generated_tests/python/test_storages.py::test_memory_storage_handles_different_data_types[data1] PASSED [ 61%]
+generated_tests/python/test_storages.py::test_memory_storage_handles_different_data_types[data2] PASSED [ 69%]
+generated_tests/python/test_storages.py::test_json_storage_write_io_error PASSED [ 76%]
+generated_tests/python/test_storages.py::test_json_storage_close PASSED  [ 84%]
+generated_tests/python/test_storages.py::test_json_storage_flush_and_truncate_on_write FAILED [ 92%]
+generated_tests/python/test_storages.py::test_abstract_storage_implementation_raises_not_implemented_error PASSED [100%]
+
+=================================== FAILURES ===================================
+______________ test_json_storage_init_creates_file_if_not_exists _______________
+
+mock_storage_path = PosixPath('/tmp/pytest-of-runner/pytest-0/test_json_storage_init_creates0/test.db')
+
+    def test_json_storage_init_creates_file_if_not_exists(mock_storage_path):
+        with patch("tinydb.storages.touch") as mock_touch:
+>           JSONStorage(str(mock_storage_path), create_dirs=True)
+
+generated_tests/python/test_storages.py:40: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tinydb.storages.JSONStorage object at 0x7f0022501520>
+path = '/tmp/pytest-of-runner/pytest-0/test_json_storage_init_creates0/test.db'
+create_dirs = True, encoding = None, access_mode = 'r+', kwargs = {}
+
+    def __init__(self, path: str, create_dirs=False, encoding=None, access_mode='r+', **kwargs):
+        """
+        Create a new instance.
+    
+        Also creates the storage file, if it doesn't exist and the access mode
+        is appropriate for writing.
+    
+        Note: Using an access mode other than `r` or `r+` will probably lead to
+        data loss or data corruption!
+    
+        :param path: Where to store the JSON data.
+        :param access_mode: mode in which the file is opened (r, r+)
+        :type access_mode: str
+        """
+    
+        super().__init__()
+    
+        self._mode = access_mode
+        self.kwargs = kwargs
+    
+        if access_mode not in ('r', 'rb', 'r+', 'rb+'):
+            warnings.warn(
+                'Using an `access_mode` other than \'r\', \'rb\', \'r+\' '
+                'or \'rb+\' can cause data loss or corruption'
+            )
+    
+        # Create the file if it doesn't exist and creating is allowed by the
+        # access mode
+        if any([character in self._mode for character in ('+', 'w', 'a')]):  # any of the writing modes
+            touch(path, create_dirs=create_dirs)
+    
+        # Open the file for reading/writing
+>       self._handle = open(path, mode=self._mode, encoding=encoding)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/test_json_storage_init_creates0/test.db'
+
+tinydb/storages.py:116: FileNotFoundError
+_________ test_json_storage_write_unsupported_operation_raises_ioerror _________
+
+mock_storage_path = PosixPath('/tmp/pytest-of-runner/pytest-0/test_json_storage_write_unsupp0/test.db')
+
+    def test_json_storage_write_unsupported_operation_raises_ioerror(mock_storage_path):
+>       storage = JSONStorage(str(mock_storage_path), access_mode='r')
+
+generated_tests/python/test_storages.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tinydb.storages.JSONStorage object at 0x7f0022519580>
+path = '/tmp/pytest-of-runner/pytest-0/test_json_storage_write_unsupp0/test.db'
+create_dirs = False, encoding = None, access_mode = 'r', kwargs = {}
+
+    def __init__(self, path: str, create_dirs=False, encoding=None, access_mode='r+', **kwargs):
+        """
+        Create a new instance.
+    
+        Also creates the storage file, if it doesn't exist and the access mode
+        is appropriate for writing.
+    
+        Note: Using an access mode other than `r` or `r+` will probably lead to
+        data loss or data corruption!
+    
+        :param path: Where to store the JSON data.
+        :param access_mode: mode in which the file is opened (r, r+)
+        :type access_mode: str
+        """
+    
+        super().__init__()
+    
+        self._mode = access_mode
+        self.kwargs = kwargs
+    
+        if access_mode not in ('r', 'rb', 'r+', 'rb+'):
+            warnings.warn(
+                'Using an `access_mode` other than \'r\', \'rb\', \'r+\' '
+                'or \'rb+\' can cause data loss or corruption'
+            )
+    
+        # Create the file if it doesn't exist and creating is allowed by the
+        # access mode
+        if any([character in self._mode for character in ('+', 'w', 'a')]):  # any of the writing modes
+            touch(path, create_dirs=create_dirs)
+    
+        # Open the file for reading/writing
+>       self._handle = open(path, mode=self._mode, encoding=encoding)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/test_json_storage_write_unsupp0/test.db'
+
+tinydb/storages.py:116: FileNotFoundError
+________________ test_json_storage_flush_and_truncate_on_write _________________
+
+mock_storage_path = PosixPath('/tmp/pytest-of-runner/pytest-0/test_json_storage_flush_and_tr0/test.db')
+
+    def test_json_storage_flush_and_truncate_on_write(mock_storage_path):
+        data = {"key": "value"}
+        storage = JSONStorage(str(mock_storage_path))
+        with patch.object(storage._handle, "flush") as mock_flush, \
+             patch.object(storage._handle, "truncate") as mock_truncate:
+            storage.write(data)
+>           mock_flush.assert_called_once()
+
+generated_tests/python/test_storages.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <MagicMock name='flush' id='139638552738160'>
+
+    def assert_called_once(self):
+        """assert that the mock was called only once.
+        """
+        if not self.call_count == 1:
+            msg = ("Expected '%s' to have been called once. Called %s times.%s"
+                   % (self._mock_name or 'mock',
+                      self.call_count,
+                      self._calls_repr()))
+>           raise AssertionError(msg)
+E           AssertionError: Expected 'flush' to have been called once. Called 2 times.
+E           Calls: [call(), call()].
+
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/unittest/mock.py:892: AssertionError
+
+---------- coverage: platform linux, python 3.8.18-final-0 -----------
+Name                    Stmts   Miss Branch BrPart  Cover   Missing
+-------------------------------------------------------------------
+tinydb/__init__.py          5      0      0      0   100%
+tinydb/database.py         53     30     10      0    37%   91-97, 127-133, 161, 170-174, 185-202, 212, 229-230, 242, 248-249, 255, 268, 274
+tinydb/middlewares.py      33     33      6      0     0%   5-127
+tinydb/mypy_plugin.py      25     25      2      0     0%   1-38
+tinydb/operations.py       24     24      0      0     0%   12-69
+tinydb/queries.py         124     84     70      2    22%   28, 50->exit, 52->exit, 73-74, 77, 86, 92, 98-101, 109-113, 119-123, 126-127, 165-171, 180, 186-194, 205, 221-238, 251, 264, 277, 290, 303, 316, 327, 341-347, 360-366, 388, 415-423, 448-456, 469, 475-482, 495, 505-514, 520
+tinydb/storages.py         57      2      9      2    94%   27->32, 76, 130
+tinydb/table.py           216    181    102      0    11%   35-36, 109-116, 132, 139, 150-179, 188-223, 237, 249-281, 302-344, 360-368, 387-459, 474-511, 528-552, 566-615, 623-626, 635, 642, 649, 659-661, 669-696, 708-721, 737-773
+tinydb/utils.py            73     37     20      1    40%   33, 54-55, 59, 63, 66, 69, 72, 75, 78, 81-85, 88, 91-98, 101-111, 125, 128, 138, 141, 148-159
+tinydb/version.py           1      0      0      0   100%
+-------------------------------------------------------------------
+TOTAL                     611    416    219      5    25%
+
+=========================== short test summary info ============================
+FAILED generated_tests/python/test_storages.py::test_json_storage_init_creates_file_if_not_exists - FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/test_json_storage_init_creates0/test.db'
+FAILED generated_tests/python/test_storages.py::test_json_storage_write_unsupported_operation_raises_ioerror - FileNotFoundError: [Errno 2] No such file or directory: '/tmp/pytest-of-runner/pytest-0/test_json_storage_write_unsupp0/test.db'
+FAILED generated_tests/python/test_storages.py::test_json_storage_flush_and_truncate_on_write - AssertionError: Expected 'flush' to have been called once. Called 2 times.
+Calls: [call(), call()].
+========================= 3 failed, 10 passed in 0.27s =========================
