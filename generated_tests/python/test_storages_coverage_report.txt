@@ -1,0 +1,116 @@
+============================= test session starts ==============================
+platform linux -- Python 3.8.18, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.8.18/x64/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/work/tinydb/tinydb
+configfile: pytest.ini
+plugins: cov-5.0.0
+collecting ... collected 0 items
+
+
+---------- coverage: platform linux, python 3.8.18-final-0 -----------
+Name                    Stmts   Miss  Cover   Missing
+-----------------------------------------------------
+tinydb/__init__.py          5      5     0%   27-32
+tinydb/database.py         53     53     0%   4-274
+tinydb/middlewares.py      33     33     0%   5-127
+tinydb/mypy_plugin.py      25     25     0%   1-38
+tinydb/operations.py       24     24     0%   12-69
+tinydb/queries.py         124    124     0%   19-520
+tinydb/storages.py         57     57     0%   6-177
+tinydb/table.py           216    216     0%   6-773
+tinydb/utils.py            73     73     0%   5-159
+tinydb/version.py           1      1     0%   1
+-----------------------------------------------------
+TOTAL                     611    611     0%
+
+============================ no tests ran in 0.10s =============================
+============================= test session starts ==============================
+platform linux -- Python 3.8.18, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.8.18/x64/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/work/tinydb/tinydb
+configfile: pytest.ini
+plugins: cov-5.0.0
+collecting ... collected 12 items
+
+generated_tests/python/test_storages.py::test_memory_storage_read_write PASSED [  8%]
+generated_tests/python/test_storages.py::test_json_storage_write_and_read PASSED [ 16%]
+generated_tests/python/test_storages.py::test_json_storage_empty_read PASSED [ 25%]
+generated_tests/python/test_storages.py::test_json_storage_unsupported_operation FAILED [ 33%]
+generated_tests/python/test_storages.py::test_touch_function_creates_file PASSED [ 41%]
+generated_tests/python/test_storages.py::test_storage_abc PASSED         [ 50%]
+generated_tests/python/test_storages.py::test_touch_with_mock PASSED     [ 58%]
+generated_tests/python/test_storages.py::test_json_storage_with_invalid_path PASSED [ 66%]
+generated_tests/python/test_storages.py::test_json_storage_write_read_cycle[data0-expected0] PASSED [ 75%]
+generated_tests/python/test_storages.py::test_json_storage_write_read_cycle[data1-None] FAILED [ 83%]
+generated_tests/python/test_storages.py::test_memory_storage_close PASSED [ 91%]
+generated_tests/python/test_storages.py::test_json_storage_mode_warning PASSED [100%]
+
+=================================== FAILURES ===================================
+___________________ test_json_storage_unsupported_operation ____________________
+
+setup_json_storage = (<tinydb.storages.JSONStorage object at 0x7fa4f376d550>, PosixPath('/tmp/pytest-of-runner/pytest-0/test_json_storage_unsupported_0/test.json'))
+
+    def test_json_storage_unsupported_operation(setup_json_storage):
+        """Test handling of unsupported operations in JSONStorage."""
+        storage, _ = setup_json_storage
+        storage._handle.close()  # Close the file to simulate unsupported operation
+    
+        with pytest.raises(IOError):
+>           storage.write(test_doc)
+
+generated_tests/python/test_storages.py:61: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tinydb.storages.JSONStorage object at 0x7fa4f376d550>
+data = {'key': 'value'}
+
+    def write(self, data: Dict[str, Dict[str, Any]]):
+        # Move the cursor to the beginning of the file just in case
+>       self._handle.seek(0)
+E       ValueError: I/O operation on closed file.
+
+tinydb/storages.py:140: ValueError
+________________ test_json_storage_write_read_cycle[data1-None] ________________
+
+setup_json_storage = (<tinydb.storages.JSONStorage object at 0x7fa4f3907f70>, PosixPath('/tmp/pytest-of-runner/pytest-0/test_json_storage_write_read_c1/test.json'))
+data = {}, expected = None
+
+    @pytest.mark.parametrize("data,expected", [
+        (test_doc, test_doc),
+        (test_doc_empty, None)  # JSONStorage should return None for an empty file
+    ])
+    def test_json_storage_write_read_cycle(setup_json_storage, data, expected):
+        """Test JSONStorage write and read cycle with different data."""
+        storage, _ = setup_json_storage
+        storage.write(data)
+>       assert storage.read() == expected, "The read data should match the expected result after a write."
+E       AssertionError: The read data should match the expected result after a write.
+E       assert {} == None
+E        +  where {} = read()
+E        +    where read = <tinydb.storages.JSONStorage object at 0x7fa4f3907f70>.read
+
+generated_tests/python/test_storages.py:104: AssertionError
+
+---------- coverage: platform linux, python 3.8.18-final-0 -----------
+Name                    Stmts   Miss Branch BrPart  Cover   Missing
+-------------------------------------------------------------------
+tinydb/__init__.py          5      0      0      0   100%
+tinydb/database.py         53     30     10      0    37%   91-97, 127-133, 161, 170-174, 185-202, 212, 229-230, 242, 248-249, 255, 268, 274
+tinydb/middlewares.py      33     33      6      0     0%   5-127
+tinydb/mypy_plugin.py      25     25      2      0     0%   1-38
+tinydb/operations.py       24     24      0      0     0%   12-69
+tinydb/queries.py         124     84     70      2    22%   28, 50->exit, 52->exit, 73-74, 77, 86, 92, 98-101, 109-113, 119-123, 126-127, 165-171, 180, 186-194, 205, 221-238, 251, 264, 277, 290, 303, 316, 327, 341-347, 360-366, 388, 415-423, 448-456, 469, 475-482, 495, 505-514, 520
+tinydb/storages.py         57      2      9      2    94%   27->32, 112->116, 148-149
+tinydb/table.py           216    181    102      0    11%   35-36, 109-116, 132, 139, 150-179, 188-223, 237, 249-281, 302-344, 360-368, 387-459, 474-511, 528-552, 566-615, 623-626, 635, 642, 649, 659-661, 669-696, 708-721, 737-773
+tinydb/utils.py            73     37     20      1    40%   33, 54-55, 59, 63, 66, 69, 72, 75, 78, 81-85, 88, 91-98, 101-111, 125, 128, 138, 141, 148-159
+tinydb/version.py           1      0      0      0   100%
+-------------------------------------------------------------------
+TOTAL                     611    416    219      5    25%
+
+=========================== short test summary info ============================
+FAILED generated_tests/python/test_storages.py::test_json_storage_unsupported_operation - ValueError: I/O operation on closed file.
+FAILED generated_tests/python/test_storages.py::test_json_storage_write_read_cycle[data1-None] - AssertionError: The read data should match the expected result after a write.
+assert {} == None
+ +  where {} = read()
+ +    where read = <tinydb.storages.JSONStorage object at 0x7fa4f3907f70>.read
+========================= 2 failed, 10 passed in 0.22s =========================
