@@ -2,7 +2,7 @@ name: Automated Test Generation Pipeline
 on:
  push:
    branches:
-     - main
+     - master
      - "feature/*"
      - eleanor-br
    paths:
@@ -104,5 +104,5 @@ jobs:
            - Edge cases
            - Error handling
            Generated using OpenAI GPT-4
-         destination_branch: "main"
+         destination_branch: "master"
          source_branch: ${{ env.BRANCH_NAME }}
