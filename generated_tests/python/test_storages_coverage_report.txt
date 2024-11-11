@@ -1,0 +1,111 @@
+============================= test session starts ==============================
+platform linux -- Python 3.8.18, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.8.18/x64/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/work/tinydb/tinydb
+configfile: pytest.ini
+plugins: cov-5.0.0
+collecting ... collected 0 items
+
+
+---------- coverage: platform linux, python 3.8.18-final-0 -----------
+Name                    Stmts   Miss  Cover   Missing
+-----------------------------------------------------
+tinydb/__init__.py          5      5     0%   27-32
+tinydb/database.py         53     53     0%   4-274
+tinydb/middlewares.py      33     33     0%   5-127
+tinydb/mypy_plugin.py      25     25     0%   1-38
+tinydb/operations.py       24     24     0%   12-69
+tinydb/queries.py         124    124     0%   19-520
+tinydb/storages.py         57     57     0%   7-178
+tinydb/table.py           216    216     0%   6-773
+tinydb/utils.py            73     73     0%   5-159
+tinydb/version.py           1      1     0%   1
+-----------------------------------------------------
+TOTAL                     611    611     0%
+
+============================ no tests ran in 0.10s =============================
+============================= test session starts ==============================
+platform linux -- Python 3.8.18, pytest-8.3.3, pluggy-1.5.0 -- /opt/hostedtoolcache/Python/3.8.18/x64/bin/python
+cachedir: .pytest_cache
+rootdir: /home/runner/work/tinydb/tinydb
+configfile: pytest.ini
+plugins: cov-5.0.0
+collecting ... collected 11 items
+
+generated_tests/python/test_storages.py::test_touch_creates_file PASSED  [  9%]
+generated_tests/python/test_storages.py::test_touch_without_create_dirs PASSED [ 18%]
+generated_tests/python/test_storages.py::test_json_storage_write_and_read PASSED [ 27%]
+generated_tests/python/test_storages.py::test_json_storage_write_raises_ioerror_with_invalid_mode PASSED [ 36%]
+generated_tests/python/test_storages.py::test_json_storage_close PASSED  [ 45%]
+generated_tests/python/test_storages.py::test_json_storage_empty_file_returns_none FAILED [ 54%]
+generated_tests/python/test_storages.py::test_memory_storage_write_and_read PASSED [ 63%]
+generated_tests/python/test_storages.py::test_memory_storage_is_isolated PASSED [ 72%]
+generated_tests/python/test_storages.py::test_storage_abc_enforcement PASSED [ 81%]
+generated_tests/python/test_storages.py::test_touch_with_os_makedirs_exception PASSED [ 90%]
+generated_tests/python/test_storages.py::test_json_storage_with_unsupported_operation PASSED [100%]
+
+=================================== FAILURES ===================================
+__________________ test_json_storage_empty_file_returns_none ___________________
+
+    def test_json_storage_empty_file_returns_none():
+        with patch("builtins.open", mock_open(read_data="")) as mocked_file, \
+             patch("os.path.getsize", return_value=0):
+            storage = JSONStorage("/fake/path")
+>           assert storage.read() is None
+
+generated_tests/python/test_storages.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tinydb/storages.py:137: in read
+    return json.load(self._handle)
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/json/__init__.py:293: in load
+    return loads(fp.read(),
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/json/__init__.py:357: in loads
+    return _default_decoder.decode(s)
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/json/decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x7fc2d4c6aee0>, s = '', idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+            obj, end = self.scan_once(s, idx)
+        except StopIteration as err:
+>           raise JSONDecodeError("Expecting value", s, err.value) from None
+E           json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/json/decoder.py:355: JSONDecodeError
+=============================== warnings summary ===============================
+generated_tests/python/test_storages.py::test_json_storage_write_raises_ioerror_with_invalid_mode
+  /home/runner/work/tinydb/tinydb/tinydb/storages.py:106: UserWarning: Using an `access_mode` other than 'r', 'rb', 'r+' or 'rb+' can cause data loss or corruption
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+
+---------- coverage: platform linux, python 3.8.18-final-0 -----------
+Name                    Stmts   Miss Branch BrPart  Cover   Missing
+-------------------------------------------------------------------
+tinydb/__init__.py          5      0      0      0   100%
+tinydb/database.py         53     30     10      0    37%   91-97, 127-133, 161, 170-174, 185-202, 212, 229-230, 242, 248-249, 255, 268, 274
+tinydb/middlewares.py      33     33      6      0     0%   5-127
+tinydb/mypy_plugin.py      25     25      2      0     0%   1-38
+tinydb/operations.py       24     24      0      0     0%   12-69
+tinydb/queries.py         124     84     70      2    22%   28, 50->exit, 52->exit, 73-74, 77, 86, 92, 98-101, 109-113, 119-123, 126-127, 165-171, 180, 186-194, 205, 221-238, 251, 264, 277, 290, 303, 316, 327, 341-347, 360-366, 388, 415-423, 448-456, 469, 475-482, 495, 505-514, 520
+tinydb/storages.py         57      2      9      2    94%   28->33, 77, 131
+tinydb/table.py           216    181    102      0    11%   35-36, 109-116, 132, 139, 150-179, 188-223, 237, 249-281, 302-344, 360-368, 387-459, 474-511, 528-552, 566-615, 623-626, 635, 642, 649, 659-661, 669-696, 708-721, 737-773
+tinydb/utils.py            73     37     20      1    40%   33, 54-55, 59, 63, 66, 69, 72, 75, 78, 81-85, 88, 91-98, 101-111, 125, 128, 138, 141, 148-159
+tinydb/version.py           1      0      0      0   100%
+-------------------------------------------------------------------
+TOTAL                     611    416    219      5    25%
+
+=========================== short test summary info ============================
+FAILED generated_tests/python/test_storages.py::test_json_storage_empty_file_returns_none - json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+=================== 1 failed, 10 passed, 1 warning in 0.28s ====================
