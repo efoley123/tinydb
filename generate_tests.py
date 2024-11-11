@@ -176,23 +176,47 @@ class TestGenerator:
        limited_test_files = related_test_files[:1]# List
        return limited_test_files  # List
   
+  def generate_coverage_beforehand(self, test_file:Path, file_name:str, language: str):
+
+        try:
+            self.generate_coverage_report(file_name,test_file,language) #generating the coverage report
+        except subprocess.CalledProcessError as e:
+            logging.error(f"Error generating the before coverage report for {test_file}: {e}")
+        logging.info("made the before test case generation  :" + str(test_file))
+        var = os.path.exists('generated_tests/python/test_calculator.py')
+        logging.info(f"whether test file exsists {var}")
+        
+  
   def generate_coverage_report(self, file_name:str, test_file: Path, language: str):
         """Generate a code coverage report and save it as a text file."""
         report_file = test_file.parent / f"{test_file.stem}_coverage_report.txt"
-        base_name = Path(file_name).stem
+        if language == "Python":
+           # Get the full path of the base file and replace slashes with dots
+           current_path = str(os.path.dirname(os.path.abspath(__file__)))  + "/"
+           base_name = Path(file_name).resolve()
+
+           base_name = str(base_name).replace(current_path,'').replace('/', '.')
+           
+           base_name = base_name.replace(file_name,"").replace(".py","") #if (base_name) should still have .
+           if (base_name==""):
+               base_name="."
+        else:
+           # For other languages, the base_name remains the stem of the file
+           base_name = Path(file_name).stem
+
         try:
             # Run tests with coverage based on language
             if language == "Python":
                 subprocess.run(
-                    ["pytest", str(test_file), "--cov="+str(base_name), "-cov-report=term-missing"],
-                    stdout=open(report_file, "w"),
+                    ["pytest", str(test_file), "--cov="+str(base_name), "--cov-report=term-missing"],
+                    stdout=open(report_file, "a"),
                     check=True
                 )
             elif language == "JavaScript":
                 # Example for JavaScript - replace with the specific coverage tool and command
                 subprocess.run(
                     ["jest", "--coverage", "--config=path/to/jest.config.js"],
-                    stdout=open(report_file, "w"),
+                    stdout=open(report_file, "a"),
                     check=True
                 )
             # Add additional commands for other languages here
@@ -376,7 +400,7 @@ class TestGenerator:
           logging.error(f"API request failed: {e}")
           return None
       
-  def save_test_cases(self, file_name: str, test_cases: str, language: str):
+  def make_test_file(self, file_name: str, language: str) -> Path:
       """Save generated test cases to appropriate directory structure."""
       tests_dir = Path('generated_tests')
       tests_dir.mkdir(exist_ok=True)
@@ -389,8 +413,8 @@ class TestGenerator:
       test_file = lang_dir / f"{base_name}{extension}"
 
       header = ""
-
       if language.lower() == 'python':
+          logging.info("will write python specific header")
           header = (
                 "import sys\n"
                 "import os\n"
@@ -399,13 +423,22 @@ class TestGenerator:
       elif language.lower() == 'go':
           #add stuff for go
           logging.info("go unwritten code for save_test_cases")
-          
-
-      
-
+    
       try:
           with open(test_file, 'w', encoding='utf-8') as f:
-              f.write(header + test_cases)
+              f.write(header)
+              logging.info("wrote header in test file")
+              f.close
+      except Exception as e:
+          logging.error(f"Error adding header to {test_file}: {e}")
+        
+      return test_file
+  
+  def save_tests_created(self, test_file: Path,test_cases:str,language:str):
+    
+      try:
+          with open(test_file, 'a', encoding='utf-8') as f:
+              f.write(test_cases)
           logging.info(f"Test cases saved to {test_file}")
       except Exception as e:
           logging.error(f"Error saving test cases to {test_file}: {e}")
@@ -415,6 +448,8 @@ class TestGenerator:
       else:
           logging.error(f"File {test_file} was not created.")
       return test_file
+
+      
 
   def run(self):
       """Main execution method."""
@@ -435,15 +470,18 @@ class TestGenerator:
                prompt = self.create_prompt(file_name, language)
                
                if prompt:
+                   
                    test_cases = self.call_openai_api(prompt)
                    
                    if test_cases:
                        test_cases = test_cases.replace("“", '"').replace("”", '"')
-                       #self.save_test_cases(file_name, test_cases, language)
 
                        self.ensure_coverage_installed(language)
 
-                       test_file = self.save_test_cases(file_name, test_cases, language)
+                       test_file_path = self.make_test_file(file_name,language)
+
+                       self.generate_coverage_beforehand(test_file_path,file_name,language)
+                       test_file = self.save_tests_created(test_file_path,test_cases, language)
                        self.generate_coverage_report(file_name, test_file, language)
                    else:
                        logging.error(f"Failed to generate test cases for {file_name}")
